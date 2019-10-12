@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Blackout</title>
+    </head>
+    <body style="background-color: black">
+        <canvas id="canvas" height="700" width="800"></canvas>
+        <div id="play" style="position:absolute; top:50%; left:50%; color: blanchedalmond"">Play</div>
+        <audio src="song0.wav" controls id="song" autoplay="autoplay" style="visibility: hidden" onended="audioChange()"></audio>
+    </body>
+</html>
+<style>
+    html, body {width: 100%; margin: 0; height: 100%; overflow: hidden; position:fixed}
+</style>
+<script src="game.js"></script>

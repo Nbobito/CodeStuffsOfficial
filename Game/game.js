@@ -51,8 +51,11 @@ function drawMap(mapNum){
     levelVar = "level" + mapNum
     var currentList = eval(levelVar + ".map")
     drawList(currentList, "Bounderies", "#000000")
-    var currentList = eval(levelVar + ".goal")
+    currentList = eval(levelVar + ".goal")
     drawList(currentList, "GoalBounderies", "#4CAF50")
+    currentList = eval(levelVar + ".start")
+    character.x = currentList[0]
+    character.y = currentList[1]
 }
 
 function draw(x, y, width, height ,color){

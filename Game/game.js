@@ -36,6 +36,11 @@ var upBounderies = [0]
 var downBounderies = [0]
 var bounderiesLength = 0
 
+var rightGoalBounderies = [0]
+var leftGoalBounderies = [0]
+var upGoalBounderies = [0]
+var downGoalBounderies = [0]
+
 var level0 = {
     map:[50,50,50,50],
     start:[10,10],
@@ -43,23 +48,30 @@ var level0 = {
 }
 
 function drawMap(mapNum){
-    levelVar = eval("level"+mapNum)
-    character.x = levelVar.start[0] * w
-    character.y = levelVar.start[0] * h
-    draw(levelVar.goal[0],levelVar.goal[1],levelVar.goal[2],levelVar.goal[3],"#137826")
-    for(i=0; (levelVar.map.length/4)>i; i++){
-        draw(levelVar.map[4 * i], levelVar.map[(4 * i) + 1], levelVar.map[(4 * i) + 2], levelVar.map[(4 * i) + 3], "#000000")
-        leftBounderies[i] = levelVar.map[4 * i] - character.width/w
-        upBounderies[i] = levelVar.map[(4 * i) + 1] - character.height/h
-        rightBounderies[i] = levelVar.map[4 * i] +  levelVar.map[(4 * i) + 2]
-        downBounderies[i] = levelVar.map[(4 * i) + 1] + levelVar.map[(4 * i) + 3]
-    }
-    bounderiesLength = (levelVar.map.length/4)
+    levelVar = "level" + mapNum
+    var currentList = eval(levelVar + ".map")
+    drawList(currentList, "Bounderies", "#000000")
+    var currentList = eval(levelVar + ".goal")
+    drawList(currentList, "GoalBounderies", "#4CAF50")
 }
 
 function draw(x, y, width, height ,color){
     c.fillStyle = color
     c.fillRect(x * w, y * h, width * w, height * h)
+}
+
+function drawList(lst, bounderyList, color){
+    var upVar = "up" + bounderyList
+    var downVar = "down" + bounderyList
+    var leftVar = "left" + bounderyList
+    var rightVar = "right" + bounderyList
+    for(i=0; (lst.length/4)>i; i++){
+        draw(lst[4 * i], lst[(4 * i) + 1], lst[(4 * i) + 2], lst[(4 * i) + 3], color)
+        eval(leftVar + "[i] = lst[4 * i] - character.width/w")
+        eval(upVar + "[i] = lst[(4 * i) + 1] - character.height/h")
+        eval(rightVar + "[i] = lst[4 * i] +  lst[(4 * i) + 2]")
+        eval(downVar + "[i] = lst[(4 * i) + 1] + lst[(4 * i) + 3]")
+    }
 }
 
 function percentToPixels(){
@@ -124,16 +136,24 @@ function drawFrame(){
 function keyAssign(keyarg){
     switch(keyarg){
         case "ArrowLeft":
-            character.dirrection = 0
+            if(character.dirrection != 2){    
+                character.dirrection = 0
+            }
             break;
         case "ArrowUp":
-            character.dirrection = 1
+            if(character.dirrection != 3){    
+                character.dirrection = 1
+            }
             break;
         case "ArrowRight":
-            character.dirrection = 2
+            if(character.dirrection != 0){    
+                character.dirrection = 2
+            }
             break;
         case "ArrowDown":
-            character.dirrection = 3
+            if(character.dirrection != 1){    
+                character.dirrection = 3
+            }
             break;
         default:
             return 0
@@ -172,8 +192,9 @@ document.onclick = function () {
 }
 
 var audioFileCount = 0
+var numberOfaSongs = 3
 
 function audioChange(){
-    audioFileCount = ( audioFileCount + 1 ) % 2
+    audioFileCount = ( audioFileCount + 1 ) % 3
     document.getElementById("song").src = "song" + audioFileCount + ".wav"
 }

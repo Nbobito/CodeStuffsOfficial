@@ -70,10 +70,10 @@ function drawList(lst, bounderyList, color){
     var rightVar = "right" + bounderyList
     for(i=0; (lst.length/4)>i; i++){
         draw(lst[4 * i], lst[(4 * i) + 1], lst[(4 * i) + 2], lst[(4 * i) + 3], color)
-        eval(leftVar + "[i] = lst[4 * i] - character.width/w")
-        eval(upVar + "[i] = lst[(4 * i) + 1] - character.height/h")
-        eval(rightVar + "[i] = lst[4 * i] +  lst[(4 * i) + 2]")
-        eval(downVar + "[i] = lst[(4 * i) + 1] + lst[(4 * i) + 3]")
+        eval(bounderyList + "[(4 * i) + 0] = lst[4 * i] - character.width/w")
+        eval(bounderyList + "[(4 * i) + 1] = lst[(4 * i) + 1] - character.height/h")
+        eval(bounderyList + "[(4 * i) + 2] = lst[4 * i] +  lst[(4 * i) + 2]")
+        eval(bounderyList + "[(4 * i) + 3] = lst[(4 * i) + 1] + lst[(4 * i) + 3]")
     }
 }
 
@@ -91,20 +91,15 @@ function characterDraw(x,y){
     character.y = y
 }
 
-function collideLeft(pos){
-    return character.percentX >= pos
-}
+function collisionDetection(listVar){
+    var up = eval("up" + listVar)
+    var down = eval("down" + listVar)
+    var left = eval("left" + listVar)
+    var right = eval("right" + listVar)
+    
+    var index = 0
+    var output = false
 
-function collideRight(pos){
-    return character.percentX <= pos
-}
-
-function collideUp(pos){
-    return character.percentY >= pos
-}
-
-function collideDown(pos){
-    return character.percentY <= pos
 }
 
 function collisionDetected(){
@@ -129,10 +124,8 @@ function drawFrame(){
             characterDraw(character.x, character.y + character.speed)
             break;
     }
-    for(k=0;k<=bounderiesLength;k++){
-        if(leftBounderies.every(collideLeft) && rightBounderies.every(collideRight) && upBounderies.every(collideUp) && downBounderies.every(collideDown)){
-            collisionDetected()
-        }
+    if(collisionDetection("Bounderies")){
+        collisionDetected()
     }
 }
 

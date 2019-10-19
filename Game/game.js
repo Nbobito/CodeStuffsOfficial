@@ -30,16 +30,8 @@ const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
-var rightBounderies = [0]
-var leftBounderies = [0]
-var upBounderies = [0]
-var downBounderies = [0]
-var bounderiesLength = 0
-
-var rightGoalBounderies = [0]
-var leftGoalBounderies = [0]
-var upGoalBounderies = [0]
-var downGoalBounderies = [0]
+var bounderies = [0]
+var goalBounderies = [0]
 
 var level0 = {
     map:[50,50,50,50],
@@ -50,9 +42,9 @@ var level0 = {
 function drawMap(mapNum){
     levelVar = "level" + mapNum
     var currentList = eval(levelVar + ".map")
-    drawList(currentList, "Bounderies", "#000000")
+    drawList(currentList, "bounderies", "#000000")
     currentList = eval(levelVar + ".goal")
-    drawList(currentList, "GoalBounderies", "#4CAF50")
+    drawList(currentList, "goalBounderies", "#4CAF50")
     currentList = eval(levelVar + ".start")
     character.x = currentList[0]
     character.y = currentList[1]
@@ -64,10 +56,6 @@ function draw(x, y, width, height ,color){
 }
 
 function drawList(lst, bounderyList, color){
-    var upVar = "up" + bounderyList
-    var downVar = "down" + bounderyList
-    var leftVar = "left" + bounderyList
-    var rightVar = "right" + bounderyList
     for(i=0; (lst.length/4)>i; i++){
         draw(lst[4 * i], lst[(4 * i) + 1], lst[(4 * i) + 2], lst[(4 * i) + 3], color)
         eval(bounderyList + "[(4 * i) + 0] = lst[4 * i] - character.width/w")
@@ -92,14 +80,9 @@ function characterDraw(x,y){
 }
 
 function collisionDetection(listVar){
-    var up = eval("up" + listVar)
-    var down = eval("down" + listVar)
-    var left = eval("left" + listVar)
-    var right = eval("right" + listVar)
-    
-    var index = 0
-    var output = false
-
+    if(listVar[0] <= character.percentX && listVar[1] <= character.percentY && character.percentX <= listVar[2] && character.percentY <= listVar[3]){
+        return true
+    }
 }
 
 function collisionDetected(){
@@ -124,7 +107,7 @@ function drawFrame(){
             characterDraw(character.x, character.y + character.speed)
             break;
     }
-    if(collisionDetection("Bounderies")){
+    if(bounderies.every(collisionDetection)){
         collisionDetected()
     }
 }

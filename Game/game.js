@@ -8,13 +8,13 @@ var h = canvas.height/100
 var w = canvas.width/100
 
 var character = {
-    x : 10*w,
-    y:10*h,
+    x : Math.floor(10*w),
+    y: Math.floor(10*h),
     percentX: 50/w,
     percentY: 50/h,
     speed : 10,
-    height : 5*h,
-    width : 5*w,
+    height : Math.floor(5*h),
+    width : Math.floor(5*w),
     dirrection : null,
     color : "#FFFFFF"
 }
@@ -30,8 +30,8 @@ const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
-var bounderies = [0]
-var goalBounderies = [0]
+var bounderies = [[0]]
+var goalBounderies = [[0]]
 
 var level0 = {
     map:[50,50,50,50],
@@ -46,8 +46,8 @@ function drawMap(mapNum){
     currentList = eval(levelVar + ".goal")
     drawList(currentList, "goalBounderies", "#4CAF50")
     currentList = eval(levelVar + ".start")
-    character.x = currentList[0]
-    character.y = currentList[1]
+    character.x = Math.floor(currentList[0])
+    character.y = Math.floor(currentList[1])
 }
 
 function draw(x, y, width, height ,color){
@@ -58,10 +58,10 @@ function draw(x, y, width, height ,color){
 function drawList(lst, bounderyList, color){
     for(i=0; (lst.length/4)>i; i++){
         draw(lst[4 * i], lst[(4 * i) + 1], lst[(4 * i) + 2], lst[(4 * i) + 3], color)
-        eval(bounderyList + "[(4 * i) + 0] = lst[4 * i] - character.width/w")
-        eval(bounderyList + "[(4 * i) + 1] = lst[(4 * i) + 1] - character.height/h")
-        eval(bounderyList + "[(4 * i) + 2] = lst[4 * i] +  lst[(4 * i) + 2]")
-        eval(bounderyList + "[(4 * i) + 3] = lst[(4 * i) + 1] + lst[(4 * i) + 3]")
+        eval(bounderyList + "[i][(4 * i) + 0] = lst[4 * i] - character.width/w")
+        eval(bounderyList + "[i][(4 * i) + 1] = lst[(4 * i) + 1] - character.height/h")
+        eval(bounderyList + "[i][(4 * i) + 2] = lst[4 * i] +  lst[(4 * i) + 2]")
+        eval(bounderyList + "[i][(4 * i) + 3] = lst[(4 * i) + 1] + lst[(4 * i) + 3]")
     }
 }
 

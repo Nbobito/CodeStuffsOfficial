@@ -34,9 +34,10 @@ var bounderies = [[0]]
 var goalBounderies = [[0]]
 
 var level0 = {
-    map:[50,50,50,50],
+    map:[50,50,50,50,25,75,50,25],
     start:[10,10],
     goal:[50,0,50,50],
+    numOfBoxes:2
 }
 
 function drawMap(mapNum){
@@ -80,7 +81,8 @@ function characterDraw(x,y){
 }
 
 function collisionDetection(listVar){
-    if(listVar[0] <= character.percentX && listVar[1] <= character.percentY && character.percentX <= listVar[2] && character.percentY <= listVar[3]){
+    var currentCollisisionVar = listVar
+    if(currentCollisisionVar[0] <= character.percentX && currentCollisisionVar[1] <= character.percentY && character.percentX <= currentCollisisionVar[2] && character.percentY <= currentCollisisionVar[3]){
         return true
     }
 }

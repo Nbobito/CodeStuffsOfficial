@@ -41,6 +41,7 @@ var level0 = {
 }
 
 function drawMap(mapNum){
+    draw(0,0,100,100,"#878377")
     levelVar = "level" + mapNum
     var currentList = eval(levelVar + ".map")
     drawList(currentList, "bounderies", "#000000")
@@ -59,10 +60,6 @@ function draw(x, y, width, height ,color){
 function drawList(lst, bounderyList, color){
     for(i=0; (lst.length/4)>i; i++){
         draw(lst[4 * i], lst[(4 * i) + 1], lst[(4 * i) + 2], lst[(4 * i) + 3], color)
-        eval(bounderyList + "[i][(4 * i) + 0] = lst[4 * i] - character.width/w")
-        eval(bounderyList + "[i][(4 * i) + 1] = lst[(4 * i) + 1] - character.height/h")
-        eval(bounderyList + "[i][(4 * i) + 2] = lst[4 * i] +  lst[(4 * i) + 2]")
-        eval(bounderyList + "[i][(4 * i) + 3] = lst[(4 * i) + 1] + lst[(4 * i) + 3]")
     }
 }
 
@@ -136,6 +133,9 @@ function keyAssign(keyarg){
                 character.dirrection = 3
             }
             break;
+        case "Escape":
+            pauseGame()
+            break;
         default:
             return 0
     }
@@ -144,18 +144,43 @@ function keyAssign(keyarg){
 
 var isClicked = 0
 
+var isPaused = 0
+var temporaryCharacter
+
+function pauseGame(){
+    if(isPaused == 0){
+        temporaryCharacter = character
+        clearInterval(frameInterval)
+        c.globalAlpha = 0.9
+        draw(0,0,100,100, "#000000")
+        c.globalAlpha = 1
+        isPaused = 1
+        document.getElementById("song").pause()
+    }
+    else{
+        frameInterval = setInterval(drawFrame, frameDelay)
+        drawMap(currentLevel)
+        character = temporaryCharacter
+        characterDraw(temporaryCharacter.x, temporaryCharacter.y)
+        isPaused = 0
+        document.getElementById("song").play()
+    }
+}
+
 document.onclick = function () {
     if(isClicked == 0){
         c = canvas.getContext("2d")
         document.getElementById("play").style.visibility = "hidden"
         document.getElementById("song").play()
         isClicked = 1
+        currentLevel = 0
 
         sleep(6800).then(() => {
 
             
             c.fillStyle = "#878377"
             c.fillRect(0,0,w * 100,h * 100)
+            drawMap(currentLevel)
 
             frameInterval = setInterval(drawFrame ,frameDelay)
 

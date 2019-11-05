@@ -30,23 +30,27 @@ const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
-var bounderies = [[0]]
-var goalBounderies = [[0]]
+var leftBounderies = [0]
+var rightBounderies = [0]
+var upBounderies = [0]
+var downBounderies = [0]
+var BounderiesIndex = [0]
 
 var level0 = {
-    map:[50,50,50,50,25,75,50,25],
+    map:[50,50,50,50],
     start:[10,10],
-    goal:[50,0,50,50],
-    numOfBoxes:2
+    goal:[50,0,50,50]
 }
 
 function drawMap(mapNum){
     draw(0,0,100,100,"#878377")
     levelVar = "level" + mapNum
     var currentList = eval(levelVar + ".map")
-    drawList(currentList, "bounderies", "#000000")
+    drawList(currentList, "Bounderies", "#000000")
+    /*
     currentList = eval(levelVar + ".goal")
     drawList(currentList, "goalBounderies", "#4CAF50")
+    */
     currentList = eval(levelVar + ".start")
     character.x = Math.floor(currentList[0])
     character.y = Math.floor(currentList[1])
@@ -60,6 +64,11 @@ function draw(x, y, width, height ,color){
 function drawList(lst, bounderyList, color){
     for(i=0; (lst.length/4)>i; i++){
         draw(lst[4 * i], lst[(4 * i) + 1], lst[(4 * i) + 2], lst[(4 * i) + 3], color)
+        eval("left"+bounderyList+"= lst[4*i]-character.width")
+        eval("right"+bounderyList+"= lst[4*i]+lst[(4*i)+2]")
+        eval("up"+bounderyList+"= lst[(4*i)+1]-character.height")
+        eval("down"+bounderyList+"= lst[(4*i)+3]-character.width")
+        eval(bounderyList+"Index[i]=i")
     }
 }
 
@@ -77,10 +86,9 @@ function characterDraw(x,y){
     character.y = y
 }
 
-function collisionDetection(listVar){
-    var currentCollisisionVar = listVar
-    if(currentCollisisionVar[0] <= character.percentX && currentCollisisionVar[1] <= character.percentY && character.percentX <= currentCollisisionVar[2] && character.percentY <= currentCollisisionVar[3]){
-        return true
+function collisionDetection(index){
+    if(leftBounderies[index] <= character.percentX && rightBounderies[index] >= character.percentX && upBounderies[index] <= character.percentY && downBounderie[index] >= character.percentY){
+        return 1
     }
 }
 
@@ -106,7 +114,7 @@ function drawFrame(){
             characterDraw(character.x, character.y + character.speed)
             break;
     }
-    if(bounderies.every(collisionDetection)){
+    if(BounderiesIndex.every(collisionDetection) == 1){
         collisionDetected()
     }
 }

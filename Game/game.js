@@ -206,9 +206,9 @@ document.onclick = function () {
 }
 
 var audioFileCount = 0
-var numberOfaSongs = 3
+var numberOfaSongs = 4
 
 function audioChange(){
-    audioFileCount = ( audioFileCount + 1 ) % 3
+    audioFileCount = ( audioFileCount + 1 ) % numberOfaSongs
     document.getElementById("song").src = "song" + audioFileCount + ".wav"
 }

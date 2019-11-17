@@ -200,7 +200,7 @@ document.onclick = function () {
                 var key = event.key || event.keyCode;
 
                 keyAssign(key)
-            });
+            })
         })
     }
 }

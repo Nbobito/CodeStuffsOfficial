@@ -1,30 +1,70 @@
 var canvas = document.getElementById("canvas")
 var c = canvas.getContext("2d")
 
-var frameRate = 30
-var divisions = 400/8
+var frameRate = 1000/2
+var interval = setInterval(frame, frameRate)
+var numOfDivisions = 8
+var divisions = 400/numOfDivisions
 
-var charactar = {
-    x: 25,
-    y: 12,
-    dirrection: 0,
-    trail: 1
+function gameOver(){
+    charactar = {
+        x: 2,
+        y: 4,
+        dirrection: 0,
+        trail: 0,
+        traily: [],
+        trailx: [],
+        color: "#88ff4d",
+        points: 0
+    }
+    a.x = 6
+    a.y = 4
 }
 
 function keyAssign(k){
     switch(k){
         case "ArrowUp":
-            charactar.dirrection = 1
+            if(charactar.dirrection!=3){
+                charactar.dirrection = 1
+            }
         break;
         case "ArrowRight":
-            charactar.dirrection = 2
+            if(charactar.dirrection!=4){
+                charactar.dirrection = 2
+            }
         break;
         case "ArrowDown":
-            charactar.dirrection = 3
+            if(charactar.dirrection!=1){
+                    charactar.dirrection = 3
+            }
         break;
         case "ArrowLeft":
-            charactar.dirrection = 4
+            if(charactar.dirrection!=2){
+                charactar.dirrection = 4
+            }
         break;
+        default:
+            return
+    }
+}
+
+class apple {
+    constructor(x, y) {
+        this.x = x
+        this.y = y
+        this.color = "#cc0000"
+    }
+    eat(){
+        charactar.points += 1
+        charactar.trail +=1
+        c.fillStyle = "#000000"
+        c.fillRect(this.x * divisions, this.y * divisions, divisions, divisions)
+        this.x = Math.floor(Math.random()*9)
+        this.y = Math.floor(Math.random()*9)
+    }
+    draw(){
+        c.fillStyle = this.color
+        c.fillRect(this.x * divisions, this.y * divisions, divisions, divisions)
     }
 }
 
@@ -38,8 +78,59 @@ document.addEventListener('keydown', function (event) {
     keyAssign(key)
 })
 
-var frameDelay = 1000/frameRate
+var charactar = {
+    x: 2,
+    y: 4,
+    dirrection: 0,
+    trail: 0,
+    traily: [],
+    trailx: [],
+    color: "#88ff4d",
+    points: 0
+}
+
+var a = new apple(6,4)
 
 function frame(){
-    if()
+    c.fillStyle = "#000000"
+    c.fillRect(0,0,400,400)
+    for(i=0;i<charactar.trail;i++){
+        if((i+1)<charactar.trail){
+            charactar.trailx[i] = charactar.trailx[i+1]
+            charactar.traily[i] = charactar.traily[i+1]
+        }
+        else{
+            charactar.trailx[i] = charactar.x
+            charactar.traily[i] = charactar.y
+        }
+        c.fillStyle = charactar.color
+        c.fillRect(divisions*charactar.trailx[i], divisions*charactar.traily[i],divisions,divisions)
+    }
+    switch(charactar.dirrection){
+        case 1:
+            charactar.y = charactar.y -1
+        break;
+        case 2:
+            charactar.x = charactar.x +1
+        break;
+        case 3:
+            charactar.y = charactar.y +1
+        break;
+        case 4:
+            charactar.x = charactar.x -1
+        break;
+        default:
+            return 0 
+    }
+    c.fillStyle = charactar.color
+    c.fillRect(divisions*charactar.x, divisions*charactar.y,divisions,divisions)
+    for(i=0;i<charactar.trail;i++){
+        if(charactar.x == charactar.trailx[i] && charactar.y == charactar.traily[i]){
+            gameOver()
+        }
+    }
+    if(charactar.x == a.x && charactar.y == a.y){
+        a.eat()
+    }
+    a.draw()
 }

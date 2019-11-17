@@ -1,9 +1,17 @@
 var canvas = document.getElementById("canvas")
 var c = canvas.getContext("2d")
 
-var frameRate = 1000/2
+var title = document.getElementById("title")
+var score = document.getElementById("score")
+
+var board = document.getElementById("board")
+var speed = document.getElementById("speed")
+
+var frameOption=speed.value
+
+var frameRate = 1000/frameOption
 var interval = setInterval(frame, frameRate)
-var numOfDivisions = 8
+var numOfDivisions = board.value
 var divisions = 400/numOfDivisions
 
 function gameOver(){
@@ -43,6 +51,16 @@ function keyAssign(k){
                 charactar.dirrection = 4
             }
         break;
+        case "Enter":
+            board = document.getElementById("board")
+            speed = document.getElementById("speed")
+            clearInterval(interval)
+            frameOption=speed.value
+            frameRate = 1000/frameOption
+            numOfDivisions = board.value
+            interval = setInterval(frame, frameRate)
+            divisions = 400/numOfDivisions
+        break;
         default:
             return
     }
@@ -59,8 +77,8 @@ class apple {
         charactar.trail +=1
         c.fillStyle = "#000000"
         c.fillRect(this.x * divisions, this.y * divisions, divisions, divisions)
-        this.x = Math.floor(Math.random()*9)
-        this.y = Math.floor(Math.random()*9)
+        this.x = Math.floor(Math.random()*(numOfDivisions))
+        this.y = Math.floor(Math.random()*(numOfDivisions))
     }
     draw(){
         c.fillStyle = this.color
@@ -69,6 +87,7 @@ class apple {
 }
 
 document.addEventListener('keydown', function (event) {
+
     if (event.defaultPrevented) {
         return;
     }
@@ -109,15 +128,27 @@ function frame(){
     switch(charactar.dirrection){
         case 1:
             charactar.y = charactar.y -1
+            if(charactar.y < 0){
+                charactar.y = numOfDivisions
+            }
         break;
         case 2:
             charactar.x = charactar.x +1
+            if(charactar.x > numOfDivisions){
+                charactar.x = 0
+            }
         break;
         case 3:
             charactar.y = charactar.y +1
+            if(charactar.y > numOfDivisions){
+                charactar.y = 0
+            }
         break;
         case 4:
             charactar.x = charactar.x -1
+            if(charactar.x < 0){
+                charactar.x = numOfDivisions
+            }
         break;
         default:
             return 0 
@@ -133,4 +164,6 @@ function frame(){
         a.eat()
     }
     a.draw()
+    title.innerText = "Score: "+charactar.points
+    score.innerText = charactar.points
 }

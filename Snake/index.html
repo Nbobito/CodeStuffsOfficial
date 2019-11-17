@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Snake</title>
+        <title id="title">Snake</title>
     </head>
     <body style="background-color: blueviolet;">
         <main id="main">
             <h1>Snake Game!</h1>
             <p>A Snake Game made with Javascript Canvas! Use the arrow keys to move the green square around and eat apples, while not hitting any of the walls or even yourself.</p>
+            <p>Use the options to edit the game</p>
+            <p>score: </p><div id="score"></div>
+            <input placeholder="Speed" id="speed" value="10">
+            <input placeholder="Board size" id="board" value="10">
+            <br/>
             <canvas height="400" width="400" style="background-color: black;" id="canvas">Canvas is not supported for your browser.</canvas>
             <script src="source.js"></script>
         </main>
